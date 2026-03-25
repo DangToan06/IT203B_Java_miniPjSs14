@@ -128,7 +128,7 @@ public class MainApp {
 
         System.out.println("\n=== DANH SACH SAN PHAM ===");
         if (products.isEmpty()) {
-            System.out.println("Chua co du lieu san pham. Hay chay chuc nang khoi tao database (1).");
+            System.out.println("Chua co du lieu san pham. Hay chay chuc nang khoi tao database.");
             return;
         }
 
