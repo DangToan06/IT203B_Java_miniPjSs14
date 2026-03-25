@@ -28,55 +28,6 @@ public class MainApp {
 
     private static final int STRESS_THREAD_COUNT = 50;
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            printMenu();
-            int choice = readInt(scanner);
-
-            try {
-                switch (choice) {
-                    case 1:
-                        initializeDatabase();
-                        break;
-                    case 2:
-                        showAllProducts();
-                        break;
-                    case 3:
-                        placeFlashSaleOrder(scanner);
-                        break;
-                    case 4:
-                        showReports();
-                        break;
-                    case 5:
-                        runStressTest(scanner);
-                        break;
-                    case 0:
-                        System.out.println("Tạm biệt!");
-                        break;
-
-                    default:
-                        System.out.println("Lựa chọn không hợp lệ. Vui lòng nhập lại.");
-                        break;
-                }
-            } catch (Exception ex) {
-                System.out.println("Có lỗi khi xử lý chức năng: " + ex.getMessage());
-            }
-        }
-    }
-
-    private static void printMenu() {
-        System.out.println("\n---  FLASH SALE MANAGEMENT SYSTEM  ---");
-        System.out.println("1. Khởi tạo Database (Tạo bảng/Procedures)");
-        System.out.println("2. Xem danh sách sản phẩm trong kho");
-        System.out.println("3. Đặt hàng Flash Sale (Xử lý Transaction)");
-        System.out.println("4. Xem báo cáo thống kê (Top Buyer/Revenue)");
-        System.out.println("5. Chạy Stress Test (Mô phỏng 50 Threads)");
-        System.out.println("0. Thoát");
-        System.out.print(" Chọn chức năng: ");
-    }
-
     private static void initializeDatabase() throws SQLException, IOException {
         try (Connection connection = DatabaseConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
@@ -269,17 +220,6 @@ public class MainApp {
         System.out.println("- So don thanh cong: " + successCount.get());
         System.out.println("- Ton kho cuoi: " + finalStock);
         System.out.println("- Chong overselling thanh cong: " + noOverselling);
-    }
-
-    private static int readInt(Scanner scanner) {
-        while (true) {
-            String input = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(input);
-            } catch (NumberFormatException ex) {
-                System.out.print("Vui long nhap so nguyen hop le: ");
-            }
-        }
     }
 
 }

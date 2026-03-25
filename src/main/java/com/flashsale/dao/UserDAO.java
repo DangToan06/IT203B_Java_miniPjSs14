@@ -1,22 +1,5 @@
 package com.flashsale.dao;
 
-import com.flashsale.entity.User;
-import com.flashsale.utils.DatabaseConnectionManager;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Lớp DAO cho bảng Users (người dùng).
- *
- * Cung cấp các thao tác CRUD: thêm, tìm, sửa, xóa người dùng.
- * Tất cả đều dùng PreparedStatement để chống SQL Injection (theo SRS mục IV).
- */
 public class UserDAO {
     private final DatabaseConnectionManager connectionManager;
 
