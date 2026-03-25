@@ -73,6 +73,98 @@ public class MainApp {
         }
     }
 
+    private static void showAllProducts() throws SQLException {
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> products = productDAO.findAll();
+
+        System.out.println("\n=== DANH SACH SAN PHAM ===");
+        if (products.isEmpty()) {
+            System.out.println("Chua co du lieu san pham. Hay chay chuc nang khoi tao database.");
+            return;
+        }
+
+        System.out.printf("%-10s %-25s %-12s %-10s %-12s%n", "ID", "Ten", "Gia", "Ton kho", "Category");
+        for (Product product : products) {
+            System.out.printf("%-10d %-25s %-12s %-10d %-12d%n",
+                    product.getProductId(),
+                    product.getProductName(),
+                    product.getPrice(),
+                    product.getStock(),
+                    product.getCategoryId());
+        }
+    }
+
+    private static void placeFlashSaleOrder(Scanner scanner) throws SQLException {
+        UserDAO userDAO = new UserDAO();
+        ProductDAO productDAO = new ProductDAO();
+        OrderService orderService = new OrderService();
+
+        List<User> users = userDAO.findAll();
+        if (users.isEmpty()) {
+            System.out.println("Khong co nguoi dung de dat hang. Hay khoi tao database truoc.");
+            return;
+        }
+
+        System.out.println("\n=== DANH SACH USER ===");
+        for (User user : users) {
+            System.out.printf("- %d: %s (%s)%n", user.getUserId(), user.getUsername(), user.getEmail());
+        }
+        System.out.print("Nhap user_id dat hang: ");
+        int userId = readInt(scanner);
+
+        showAllProducts();
+        Map<Integer, Integer> productIdToQuantity = new HashMap<>();
+
+        System.out.println("Nhap san pham can mua (nhap 0 de ket thuc):");
+        while (true) {
+            System.out.print("product_id: ");
+            int productId = readInt(scanner);
+            if (productId == 0) {
+                break;
+            }
+
+            Product product = productDAO.findById(productId);
+            if (product == null) {
+                System.out.println("Khong tim thay san pham voi ID " + productId + ".");
+                continue;
+            }
+
+            System.out.print("so luong: ");
+            int quantity = readInt(scanner);
+            if (quantity <= 0) {
+                System.out.println("So luong phai > 0.");
+                continue;
+            }
+
+            productIdToQuantity.merge(productId, quantity, Integer::sum);
+        }
+
+        if (productIdToQuantity.isEmpty()) {
+            System.out.println("Khong co san pham nao duoc chon.");
+            return;
+        }
+
+        boolean success = orderService.placeOrder(userId, productIdToQuantity);
+        System.out.println(
+                success ? "Dat hang thanh cong." : "Dat hang that bai (co the het hang hoac user khong hop le).");
+    }
+
+    private static void showReports() throws SQLException {
+        OrderService orderService = new OrderService();
+
+        System.out.println("\n=== TOP BUYERS ===");
+        for (TopBuyerReport buyer : orderService.getTopBuyers()) {
+            System.out.printf("- userId=%d, username=%s, totalItems=%d%n",
+                    buyer.getUserId(), buyer.getUsername(), buyer.getTotalItems());
+        }
+
+        System.out.println("\n=== REVENUE BY CATEGORY ===");
+        for (CategoryRevenueReport revenue : orderService.getRevenueByCategory()) {
+            System.out.printf("- category=%s, revenue=%s%n",
+                    revenue.getCategoryName(), revenue.getRevenue());
+        }
+    }
+
     private static void runStressTest(Scanner scanner) throws SQLException, InterruptedException {
         ProductDAO productDAO = new ProductDAO();
         OrderService orderService = new OrderService();
