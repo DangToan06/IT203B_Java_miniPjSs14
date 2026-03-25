@@ -17,16 +17,13 @@ public class DatabaseConnectionManager {
         return Helper.INSTANCE;
     }
 
-    private static final String url = "jdbc:mysql://localhost:3306/";
-    private static final String user = "root";
-    private static final String password = "Duong170226@";
 
     public Connection getConnection() throws SQLException {
         try {
-            return DriverManager.getConnection(url, user, password);
+            return DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
         } catch (Exception e) {
             // Log gọn, không lộ password
-            System.err.println("Cannot connect to database: " + url);
+            System.err.println("Cannot connect to database: " + DBConfig.URL);
             // Ném exception lên trên để xử lý đúng cách
             throw e;
         }
