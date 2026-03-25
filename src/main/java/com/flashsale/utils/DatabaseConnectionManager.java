@@ -1,31 +1,34 @@
 package com.flashsale.utils;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.flashsale.config.DBConfig;
+
+
 public class DatabaseConnectionManager {
+    // Instance duy nhất (Singleton)
+    private static DatabaseConnectionManager instance;
+
     
-    private static class Helper {
-        private static final DatabaseConnectionManager INSTANCE = new DatabaseConnectionManager();
-    }
-
     private DatabaseConnectionManager() {
+        try {
+            Class.forName(DBConfig.DRIVER);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Không thể load JDBC driver: " + DBConfig.DRIVER, e);
+        }
     }
 
-    // Method trả về instance duy nhất
-    public static DatabaseConnectionManager getInstance() {
-        return Helper.INSTANCE;
+    
+    public static synchronized DatabaseConnectionManager getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnectionManager();
+        }
+        return instance;
     }
-
 
     public Connection getConnection() throws SQLException {
-        try {
-            return DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
-        } catch (Exception e) {
-            // Log gọn, không lộ password
-            System.err.println("Cannot connect to database: " + DBConfig.URL);
-            // Ném exception lên trên để xử lý đúng cách
-            throw e;
-        }
+        return DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
     }
 }
