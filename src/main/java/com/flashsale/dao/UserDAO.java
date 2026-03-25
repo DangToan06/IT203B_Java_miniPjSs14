@@ -24,10 +24,7 @@ public class UserDAO {
         this.connectionManager = DatabaseConnectionManager.getInstance();
     }
 
-    /**
-     * Thêm người dùng mới.
-     * @return user_id được tự động tạo
-     */
+
     public int create(User user) throws SQLException {
         String sql = "INSERT INTO Users(username, email) VALUES(?, ?)";
         try (Connection connection = connectionManager.getConnection();
