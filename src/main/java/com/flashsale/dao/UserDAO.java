@@ -11,12 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lớp DAO cho bảng Users (người dùng).
- *
- * Cung cấp các thao tác CRUD: thêm, tìm, sửa, xóa người dùng.
- * Tất cả đều dùng PreparedStatement để chống SQL Injection (theo SRS mục IV).
- */
 public class UserDAO {
     private final DatabaseConnectionManager connectionManager;
 
@@ -24,10 +18,6 @@ public class UserDAO {
         this.connectionManager = DatabaseConnectionManager.getInstance();
     }
 
-    /**
-     * Thêm người dùng mới.
-     * @return user_id được tự động tạo
-     */
     public int create(User user) throws SQLException {
         String sql = "INSERT INTO Users(username, email) VALUES(?, ?)";
         try (Connection connection = connectionManager.getConnection();
@@ -46,10 +36,6 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Tìm người dùng theo ID.
-     * @return đối tượng User, hoặc null nếu không tìm thấy
-     */
     public User findById(int userId) throws SQLException {
         String sql = "SELECT user_id, username, email FROM Users WHERE user_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -64,9 +50,6 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Lấy danh sách tất cả người dùng, sắp xếp theo user_id.
-     */
     public List<User> findAll() throws SQLException {
         String sql = "SELECT user_id, username, email FROM Users ORDER BY user_id";
         List<User> users = new ArrayList<>();
@@ -80,10 +63,6 @@ public class UserDAO {
         return users;
     }
 
-    /**
-     * Cập nhật thông tin người dùng.
-     * @return true nếu cập nhật thành công
-     */
     public boolean update(User user) throws SQLException {
         String sql = "UPDATE Users SET username = ?, email = ? WHERE user_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -95,10 +74,6 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Xóa người dùng theo ID.
-     * @return true nếu xóa thành công
-     */
     public boolean delete(int userId) throws SQLException {
         String sql = "DELETE FROM Users WHERE user_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -108,9 +83,6 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Chuyển đổi 1 dòng ResultSet thành đối tượng User.
-     */
     private User mapRow(ResultSet rs) throws SQLException {
         return new User(
                 rs.getInt("user_id"),

@@ -14,18 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lớp DAO cho bảng Orders.
- *
- * Cung cấp:
- * - createOrder: tạo đơn hàng mới (dùng PreparedStatement trong transaction)
- * - getTopBuyers: gọi Stored Procedure SP_GetTopBuyers (dùng CallableStatement)
- * - getRevenueByCategory: gọi Stored Procedure SP_GetRevenueByCategory (dùng CallableStatement)
- *
- * Theo SRS mục IV:
- * - Phần báo cáo PHẢI dùng Stored Procedure, không tính toán bằng Java
- * - Dùng CallableStatement để gọi Stored Procedure
- */
 public class OrderDAO {
     private final DatabaseConnectionManager connectionManager;
 
@@ -33,17 +21,6 @@ public class OrderDAO {
         this.connectionManager = DatabaseConnectionManager.getInstance();
     }
 
-    /**
-     * Tạo đơn hàng mới trong database.
-     *
-     * Nhận connection từ bên ngoài vì hàm này chạy trong transaction
-     * (cùng transaction với trừ kho và tạo chi tiết đơn hàng).
-     *
-     * @param connection  Kết nối đang trong transaction
-     * @param userId      ID người dùng đặt hàng
-     * @param totalAmount Tổng tiền đơn hàng
-     * @return order_id được tự động tạo
-     */
     public int createOrder(Connection connection, int userId, BigDecimal totalAmount) throws SQLException {
         String sql = "INSERT INTO Orders(user_id, total_amount) VALUES(?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -61,16 +38,7 @@ public class OrderDAO {
         }
     }
 
-    /**
-     * Lấy top 5 người mua nhiều hàng nhất.
-     *
-     * Theo SRS mục IV: Dùng CallableStatement để gọi Stored Procedure SP_GetTopBuyers.
-     * Procedure này chạy ở phía database, không tính toán bằng Java.
-     *
-     * @return Danh sách TopBuyerReport (userId, username, tổng sản phẩm đã mua)
-     */
     public List<TopBuyerReport> getTopBuyers() throws SQLException {
-        // Cú pháp gọi Stored Procedure: {CALL tên_procedure()}
         String sql = "{CALL SP_GetTopBuyers()}";
         List<TopBuyerReport> result = new ArrayList<>();
 
@@ -87,14 +55,6 @@ public class OrderDAO {
         return result;
     }
 
-    /**
-     * Thống kê doanh thu theo từng danh mục sản phẩm.
-     *
-     * Theo SRS mục IV: Dùng CallableStatement để gọi Stored Procedure SP_GetRevenueByCategory.
-     * Procedure tính tổng (quantity * price) trong Order_Details cho từng danh mục.
-     *
-     * @return Danh sách CategoryRevenueReport (tên danh mục, doanh thu)
-     */
     public List<CategoryRevenueReport> getRevenueByCategory() throws SQLException {
         String sql = "{CALL SP_GetRevenueByCategory()}";
         List<CategoryRevenueReport> result = new ArrayList<>();

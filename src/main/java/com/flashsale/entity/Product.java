@@ -2,16 +2,6 @@ package com.flashsale.entity;
 
 import java.math.BigDecimal;
 
-/**
- * Lớp thực thể (Entity) đại diện cho bảng Products trong database.
- *
- * Tương ứng với cấu trúc bảng:
- * - product_id: khóa chính, tự tăng (AUTO_INCREMENT)
- * - product_name: tên sản phẩm
- * - price: giá sản phẩm (dùng BigDecimal để tránh sai số tiền tệ)
- * - stock: số lượng tồn kho (phải >= 0 theo CHECK constraint)
- * - category_id: khóa ngoại liên kết đến bảng Categories
- */
 public class Product {
     private int productId;
     private String productName;

@@ -11,12 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lớp DAO cho bảng Categories (danh mục sản phẩm).
- *
- * Cung cấp các thao tác CRUD: thêm, tìm, sửa, xóa danh mục.
- * Dùng PreparedStatement cho tất cả thao tác để chống SQL Injection (theo SRS mục IV).
- */
 public class CategoryDAO {
     private final DatabaseConnectionManager connectionManager;
 
@@ -24,10 +18,6 @@ public class CategoryDAO {
         this.connectionManager = DatabaseConnectionManager.getInstance();
     }
 
-    /**
-     * Thêm danh mục mới.
-     * @return category_id được tự động tạo
-     */
     public int create(Category category) throws SQLException {
         String sql = "INSERT INTO Categories(category_name) VALUES(?)";
         try (Connection connection = connectionManager.getConnection();
@@ -45,10 +35,6 @@ public class CategoryDAO {
         }
     }
 
-    /**
-     * Tìm danh mục theo ID.
-     * @return đối tượng Category, hoặc null nếu không tìm thấy
-     */
     public Category findById(int categoryId) throws SQLException {
         String sql = "SELECT category_id, category_name FROM Categories WHERE category_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -63,9 +49,6 @@ public class CategoryDAO {
         }
     }
 
-    /**
-     * Lấy danh sách tất cả danh mục, sắp xếp theo category_id.
-     */
     public List<Category> findAll() throws SQLException {
         String sql = "SELECT category_id, category_name FROM Categories ORDER BY category_id";
         List<Category> categories = new ArrayList<>();
@@ -79,10 +62,6 @@ public class CategoryDAO {
         return categories;
     }
 
-    /**
-     * Cập nhật tên danh mục.
-     * @return true nếu cập nhật thành công
-     */
     public boolean update(Category category) throws SQLException {
         String sql = "UPDATE Categories SET category_name = ? WHERE category_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -93,10 +72,6 @@ public class CategoryDAO {
         }
     }
 
-    /**
-     * Xóa danh mục theo ID.
-     * @return true nếu xóa thành công
-     */
     public boolean delete(int categoryId) throws SQLException {
         String sql = "DELETE FROM Categories WHERE category_id = ?";
         try (Connection connection = connectionManager.getConnection();
@@ -106,9 +81,6 @@ public class CategoryDAO {
         }
     }
 
-    /**
-     * Chuyển đổi 1 dòng ResultSet thành đối tượng Category.
-     */
     private Category mapRow(ResultSet rs) throws SQLException {
         return new Category(rs.getInt("category_id"), rs.getString("category_name"));
     }

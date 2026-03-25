@@ -1,13 +1,5 @@
 package com.flashsale.entity;
 
-/**
- * Lớp thực thể (Entity) đại diện cho bảng Users trong database.
- *
- * Tương ứng với cấu trúc bảng:
- * - user_id: khóa chính, tự tăng (AUTO_INCREMENT)
- * - username: tên người dùng (UNIQUE)
- * - email: địa chỉ email (UNIQUE)
- */
 public class User {
     private int userId;
     private String username;
