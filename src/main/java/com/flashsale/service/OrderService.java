@@ -1,4 +1,5 @@
-package com.flashsale.service;
-
-public class OrderService {
-}
+149|OrderService orderService = |new| |OrderService|();	149|OrderService orderService = |new| |OrderService|();	149|OrderService orderService = |new| |OrderService|();	149|OrderService orderService = |new| |OrderService|();
+        202|OrderService orderService = |new| |OrderService|();	202|OrderService orderService = |new| |OrderService|();	202|OrderService orderService = |new| |OrderService|();	202|OrderService orderService = |new| |OrderService|();
+        219|OrderService orderService = |new| |OrderService|();	219|OrderService orderService = |new| |OrderService|();	219|OrderService orderService = |new| |OrderService|();	219|OrderService orderService = |new| |OrderService|();
+        132|OrderService orderService = |new| |OrderService|();	132|OrderService orderService = |new| |OrderService|();	132|OrderService orderService = |new| |OrderService|();	132|OrderService orderService = |new| |OrderService|();
+        173|OrderService orderService = |new| |OrderService|();	173|OrderService orderService = |new| |OrderService|();	173|OrderService orderService = |new| |OrderService|();	173|OrderService orderService = |new| |OrderService|();
